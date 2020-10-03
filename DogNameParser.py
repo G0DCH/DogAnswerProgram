@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 # 수프 객체 return
 def MakeSoup(path):
-  data = open(path)
+  data = open(path, "r", encoding = "utf-8")
   soup = BeautifulSoup(data, 'html.parser')
 
   return soup
@@ -30,7 +30,7 @@ def SoupToList(soup):
 
   return DogNameList
 
-path = os.path.dirname(os.path.abspath(__path__))
+path = os.path.dirname(os.path.abspath(__file__))
 fileName = 'Dog.html'
 
 # 수프 파일로 변경
@@ -42,6 +42,6 @@ import csv
 
 outputName = 'DogNames.csv'
 
-with open(os.path.join(path, outputName), 'w', newline = '') as outputFile:
+with open(os.path.join(path, outputName), 'w', newline = '', encoding = "utf-8") as outputFile:
   writer = csv.writer(outputFile)
   writer.writerow(DogNameList)
