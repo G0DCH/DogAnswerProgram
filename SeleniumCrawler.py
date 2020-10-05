@@ -5,6 +5,7 @@ import os, sys
 import urllib.request
 import argparse
 import pandas as pd
+import requests.exceptions
 
 
 path = os.path.dirname(os.path.abspath(__file__))
@@ -31,13 +32,13 @@ successCounter = 0
 
 # 다운로드 할 이미지 개수
 imageNumber = 10
-#canContinue = False
+# canContinue = False
 
 for dogName in dogNames:
-#  if '폼피츠' in dogName:
-#    canContinue = True
-#  if not canContinue:
-#    continue
+  # if '코통 드 튈레아르' in dogName:
+  #   canContinue = True
+  # if not canContinue:
+  #   continue
 
   url = "https://www.google.co.in/search?q="+dogName+"&source=lnms&tbm=isch"
   browser.get(url)
@@ -77,7 +78,10 @@ for dogName in dogNames:
         req = urllib.request.Request(imageURL, headers=header)
         raw_img = urllib.request.urlopen(req).read()
       except urllib.request.HTTPError as e:
-        print (e.read())
+        print(e)
+        continue
+      except ConnectionError as e:
+        print(e)
         continue
       
       File = open(os.path.join(imagePath , dogName + "_" + str(imageCount + 1) + "." + imageType), "wb")
