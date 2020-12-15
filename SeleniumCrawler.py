@@ -31,7 +31,7 @@ counter = 0
 successCounter = 0
 
 # 다운로드 할 이미지 개수
-imageNumber = 10
+imageNumber = 20
 # canContinue = False
 
 for dogName in dogNames:
@@ -49,7 +49,7 @@ for dogName in dogNames:
   if not os.path.exists(imagePath):
     os.makedirs(imagePath)
 
-  for _ in range(imageNumber):
+  for _ in range(imageNumber + 1):
     browser.execute_script("window.scrollBy(0,10000)")
 
   for x in browser.find_elements_by_xpath('//img[contains(@class,"rg_i")]'):
@@ -66,12 +66,18 @@ for dogName in dogNames:
       # 이상한거 긁어오면 다시
       if 'base64' in str(imageURL) or \
         imageURL is None or \
+        'gif' in str(imageURL) or \
         imageURL in imageURLs:
         continue
       # png 타입이라고 생각하고 진행
       imageType = 'png'
       
       imageURLs.append(imageURL)
+      
+      # 연말 스페셜 이미지 무시
+      if imageCount == 0:
+        imageCount += 1
+        continue
 
       # 403 에러가 뜨면 계속 진행
       try:
@@ -84,7 +90,7 @@ for dogName in dogNames:
         print(e)
         continue
       
-      File = open(os.path.join(imagePath , dogName + "_" + str(imageCount + 1) + "." + imageType), "wb")
+      File = open(os.path.join(imagePath , dogName + "_" + str(imageCount) + "." + imageType), "wb")
       File.write(raw_img)
       File.close()
       successCounter = successCounter + 1
@@ -92,7 +98,7 @@ for dogName in dogNames:
       print ("Succsessful Count:", successCounter)
       break
 
-    if imageCount >= imageNumber:
+    if imageCount > imageNumber:
       imageCount = 0
       break
 
