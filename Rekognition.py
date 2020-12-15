@@ -43,14 +43,14 @@ def run():
     if not os.path.isdir(jsonBaseDirPath):
         os.makedirs(jsonBaseDirPath)
 
-    isStopPoint = True
+    # isStopPoint = True
 
     for dirName in tqdm(dirList):
-        if dirName.find('벨기에 말리노이즈') >= 0:
-            isStopPoint = False
+        # if dirName.find('벨기에 말리노이즈') >= 0:
+        #     isStopPoint = False
 
-        if isStopPoint:
-            continue
+        # if isStopPoint:
+        #     continue
         
         myPath = os.path.join(dirPath, dirName)
         myPhotoList = os.listdir(myPath)    
@@ -64,13 +64,13 @@ def run():
         myPhotoList.sort(key=lambda x: int(re.sub('[\D]+', '', x)))
 
         # 해당 강아지 사진들에 대해서 검출
-        # 0번째 사진은 구글 이미지이므로 무시
-        for i in range(1, len(myPhotoList)):
+        for i in range(0, len(myPhotoList)):
             myPhotoPath = os.path.join(myPath, myPhotoList[i])
 
             photo = myPhotoPath
 
             label_count = detect_labels_local_file(photo)
+            break
             # print("Labels detected: " + str(label_count))
 
 def main():
