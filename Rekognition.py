@@ -19,7 +19,11 @@ def detect_labels_local_file(photo):
     client=boto3.client('rekognition')
 
     with open(photo, 'rb') as image:
-        response = client.detect_labels(Image={'Bytes': image.read()})
+        try:
+            response = client.detect_labels(Image={'Bytes': image.read()})
+        except Exception as e:
+            print(e)
+            return 0
 
     # print('Detected labels in ' + photo)
     # for label in response['Labels']:
@@ -42,7 +46,7 @@ def run():
     isStopPoint = True
 
     for dirName in tqdm(dirList):
-        if dirName.find('레이크랜드 테리어') >= 0:
+        if dirName.find('벨기에 말리노이즈') >= 0:
             isStopPoint = False
 
         if isStopPoint:
