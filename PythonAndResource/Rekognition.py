@@ -70,7 +70,6 @@ def run():
             photo = myPhotoPath
 
             label_count = detect_labels_local_file(photo)
-            break
             # print("Labels detected: " + str(label_count))
 
 def main():

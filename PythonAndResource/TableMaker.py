@@ -1,4 +1,3 @@
-import boto3
 import os, sys
 import re
 import json
@@ -20,9 +19,14 @@ def read_json(jsonData, photoName):
         nameList.append(data['Name'])
         confidenceList.append(data['Confidence'])
 
+    # 테이블이 없다면 생성, 아니라면 새로 추가된 데이터 병합
+    tmpTable = pd.DataFrame(columns=[photoName], data=confidenceList, index=nameList)
     if table is None:
-        table = pd.DataFrame(columns=[photoName] ,data=confidenceList, index=nameList)
+        table = tmpTable
+    else:        
+        table = pd.concat([table, tmpTable], axis=1)
 
+    table = table.fillna(0)
     print(table)
 
 def run():
@@ -33,6 +37,10 @@ def run():
         jsonDogDirPath = os.path.join(jsonBaseDirPath, dirName)
         # 개 이름 디렉토리 속 json 파일 리스트
         jsonList = os.listdir(jsonDogDirPath)
+
+        # 숫자에 따라 파일 이름 정렬
+        jsonList.sort(key=lambda x: int(re.sub('[\D]+', '', x)))
+
         for jsonName in jsonList:
             jsonPath = os.path.join(jsonDogDirPath, jsonName)
             with open(jsonPath, 'r') as readFile:
@@ -40,7 +48,6 @@ def run():
                 jsonData = json.load(readFile)
                 read_json(jsonData, photoName)
                 readFile.close()
-            break
         break
 
 
