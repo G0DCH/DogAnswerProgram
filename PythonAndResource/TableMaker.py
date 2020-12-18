@@ -10,6 +10,8 @@ jsonDirName = 'DogDetected'
 jsonBaseDirPath = os.path.join(path, jsonDirName)
 table = None
 
+tableName = 'VectorTable.csv'
+
 def read_json(jsonData, photoName):
     global table
 
@@ -27,12 +29,11 @@ def read_json(jsonData, photoName):
         table = pd.concat([table, tmpTable], axis=1)
 
     table = table.fillna(0)
-    print(table)
 
 def run():
     # 개 이름 디렉토리 리스트
     dirList = os.listdir(jsonBaseDirPath)
-    for dirName in dirList:
+    for dirName in tqdm(dirList):
         # 개 이름 디렉토리 경로
         jsonDogDirPath = os.path.join(jsonBaseDirPath, dirName)
         # 개 이름 디렉토리 속 json 파일 리스트
@@ -48,7 +49,9 @@ def run():
                 jsonData = json.load(readFile)
                 read_json(jsonData, photoName)
                 readFile.close()
-        break
+
+    # csv 파일로 저장
+    table.to_csv(os.path.join(path, tableName), index=True, header=True)
 
 
 def main():
