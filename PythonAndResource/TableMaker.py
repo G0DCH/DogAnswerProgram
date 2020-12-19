@@ -10,7 +10,10 @@ jsonDirName = 'DogDetected'
 jsonBaseDirPath = os.path.join(path, jsonDirName)
 table = None
 
-tableName = 'VectorTable.csv'
+tableDirName = 'VectorTables'
+tableDirPath = os.path.join(path, tableDirName)
+tableName = '_VectorTable.csv'
+
 
 def read_json(jsonData, photoName):
     global table
@@ -31,6 +34,11 @@ def read_json(jsonData, photoName):
     table = table.fillna(0)
 
 def run():
+    global table
+
+    if not os.path.isdir(tableDirPath):
+        os.mkdir(tableDirPath)
+
     # 개 이름 디렉토리 리스트
     dirList = os.listdir(jsonBaseDirPath)
     for dirName in tqdm(dirList):
@@ -50,8 +58,10 @@ def run():
                 read_json(jsonData, photoName)
                 readFile.close()
 
-    # csv 파일로 저장
-    table.to_csv(os.path.join(path, tableName), index=True, header=True)
+        # csv 파일로 저장
+        table.to_csv(os.path.join(tableDirPath, dirName + tableName), index=True, header=True)
+        # 테이블 비우기
+        table = None
 
 
 def main():
