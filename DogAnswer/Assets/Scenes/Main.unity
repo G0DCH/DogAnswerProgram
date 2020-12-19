@@ -195,8 +195,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 487e03d490c9f0245a791eaef390a10a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ImagePrefab: {fileID: 6300350226855942186, guid: 3fa4f307f53f3f5438364ac15174cd78,
+    type: 3}
+  Container: {fileID: 344083861}
+  ResultPanel: {fileID: 1779418409}
   AlertMessage: {fileID: 199427076}
-  alphaDiff: 0.1
+  alphaDiff: 0.05
+  ImageBaseDirName: DogImages/
 --- !u!114 &172810003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,9 +214,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f73c93c335e35d34eb2c72090424c491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ImagePrefab: {fileID: 6300350226855942186, guid: 3fa4f307f53f3f5438364ac15174cd78,
-    type: 3}
-  Container: {fileID: 344083861}
 --- !u!1 &199427075
 GameObject:
   m_ObjectHideFlags: 0

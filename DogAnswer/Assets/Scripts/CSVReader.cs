@@ -12,7 +12,13 @@ namespace DogAnswer
         /// 앞이 헤더, 뒤가 인덱스
         /// </summary>
         public Dictionary<KeyValuePair<string, string>, float> Table;
+        /// <summary>
+        /// 헤더
+        /// </summary>
         public List<string> Columns;
+        /// <summary>
+        /// 인덱스
+        /// </summary>
         public List<string> Rows;
 
         /// <summary>

@@ -35,11 +35,17 @@ namespace DogAnswer
                 }
                 else
                 {
-                    ignoreTerms.Add(splitedText);
+                    findTerms.Add(splitedText);
                 }
             }
 
-            SearchManager.Instance.Search(findTerms, ignoreTerms);
+            var searchResults = SearchManager.Instance.Search(findTerms, ignoreTerms, out string dogName);
+
+            // 검색 결과 이미지 출력
+            if (searchResults != null && searchResults.Count > 0)
+            {
+                UIManager.Instance.ShowImages(dogName, searchResults);
+            }
         }
     }
 }
