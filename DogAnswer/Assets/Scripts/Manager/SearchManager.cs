@@ -47,8 +47,6 @@ namespace DogAnswer
             // 검색할 사진의 개 사진 인덱스 추가
             foreach (var term in findTerms)
             {
-
-
                 if (vectorTable.RowTable.TryGetValue(term, out List<float> values))
                 {
                     for (int i = 0; i < values.Count; i++)
@@ -67,7 +65,7 @@ namespace DogAnswer
             // 무시할 검색어 포함한 사진 인덱스 제거
             foreach (var term in ignoreTerms)
             {
-                if (vectorTable.RowTable.TryGetValue(term, out List<float> values))
+                if (vectorTable.ColumnTable.TryGetValue(term, out List<float> values))
                 {
                     for (int i = 0; i < values.Count; i++)
                     {

@@ -24,6 +24,10 @@ namespace DogAnswer
         public void Close(GameObject target)
         {
             target.SetActive(false);
+            for (int i = 0; i < Container.childCount; i++)
+            {
+                Destroy(Container.GetChild(i).gameObject);
+            }
         }
 
         public void Alert(string message)
