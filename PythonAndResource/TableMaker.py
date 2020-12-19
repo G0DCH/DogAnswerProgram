@@ -12,7 +12,7 @@ table = None
 
 tableDirName = 'VectorTables'
 tableDirPath = os.path.join(path, tableDirName)
-tableName = '_VectorTable.csv'
+tableType = '.csv'
 
 
 def read_json(jsonData, photoName):
@@ -59,7 +59,7 @@ def run():
                 readFile.close()
 
         # csv 파일로 저장
-        table.to_csv(os.path.join(tableDirPath, dirName + tableName), index=True, header=True)
+        table.to_csv(os.path.join(tableDirPath, dirName + tableType), index=True, header=True)
         # 테이블 비우기
         table = None
 
