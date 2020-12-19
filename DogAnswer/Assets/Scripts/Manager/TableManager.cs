@@ -6,7 +6,8 @@ namespace DogAnswer
 {
     public class TableManager : Utility.Singleton<TableManager>
     {
-        public string TableName = "VectorTables";
+        [SerializeField]
+        private string TableName = "VectorTables";
         public Dictionary<string, VectorTable> vectorTables = new Dictionary<string, VectorTable>();
         public List<string> DogNames = new List<string>();
 

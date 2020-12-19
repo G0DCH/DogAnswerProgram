@@ -15,9 +15,14 @@ namespace DogAnswer
         public List<string> Columns;
         public List<string> Rows;
 
-        // 헤더 검색
+        /// <summary>
+        /// 헤더가 인풋값
+        /// </summary>
         public Dictionary<string, List<float>> ColumnTable;
-        // 인덱스 검색
+
+        /// <summary>
+        /// 인덱스가 인풋값
+        /// </summary>
         public Dictionary<string, List<float>> RowTable;
     }
 
