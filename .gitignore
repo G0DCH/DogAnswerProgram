@@ -39,5 +39,6 @@ sysinfo.txt
 *.png
 *.json
 
-DogImages/*
-DogDetected/*
+*/DogImages/*
+*/DogDetected/*
+*/VectorTables/*
