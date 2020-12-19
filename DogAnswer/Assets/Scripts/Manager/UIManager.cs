@@ -21,12 +21,20 @@ namespace DogAnswer
         [SerializeField]
         private string ImageBaseDirName = "DogImages/";
 
-        public void Close(GameObject target)
+        // target을 키고 끔
+        public void TurnObject(GameObject target)
         {
-            target.SetActive(false);
-            for (int i = 0; i < Container.childCount; i++)
+            if (target.activeSelf)
             {
-                Destroy(Container.GetChild(i).gameObject);
+                target.SetActive(false);
+                for (int i = 0; i < Container.childCount; i++)
+                {
+                    Destroy(Container.GetChild(i).gameObject);
+                }
+            }
+            else
+            {
+                target.SetActive(true);
             }
         }
 
