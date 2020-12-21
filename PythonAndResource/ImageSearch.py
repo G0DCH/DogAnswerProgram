@@ -2,6 +2,8 @@ import os, sys
 import re
 import pandas as pd
 import google.cloud.translate_v2 as translate
+import matplotlib.image as img
+import matplotlib.pyplot as pp
 from tqdm import tqdm
 
 path = os.path.dirname(os.path.abspath(__file__))
@@ -21,10 +23,13 @@ def run():
     for tableName in tqdm(dirList):
         # csv 파일 불러오기
         table = pd.read_csv(os.path.join(tableDirPath, tableName), index_col=0)
-        tableList.append([tableName, table])
+        tableList.append([str.split(tableName, '.')[0], table])
 
-    print(tableList[0])
+def LoadImage(imagePath):
+    return img.imread(imagePath)
 
+def LoadImages(dirName):
+    imageDirPath = os.path.join(path, dirName)
 
 def main():
     run()
