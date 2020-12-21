@@ -55,6 +55,10 @@ def LoadImages(dirName, nameList):
 
     return images
 
+# TODO : 
+# 1. 인덱스에 있는 값들이 번역 쿼리에 들었는지 검사
+# 2. 없다면 http://www.gisdeveloper.co.kr/?p=8483 를 참조해서 
+
 def SearchImage(query):
     # 구글 번역기가 맞춤법 검사도 해줘서
     # 영어로 바꾸고 검사
