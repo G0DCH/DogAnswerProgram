@@ -38,6 +38,7 @@ sysinfo.txt
 
 *.png
 *.json
+*.json.meta
 
 */DogImages/*
 */DogDetected/*
