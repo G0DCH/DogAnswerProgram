@@ -109,7 +109,8 @@ def SearchImage(query):
     # extendLemmas의 lemma를 테이블의 index들과 비교해서 있다면 컬럼을 출력
     for index in targetTable.index:
         lowIndex = index.lower()
-        if isDontHavePositive or (lowIndex in translatedQuery) or (lowIndex in extendLemmas):
+        isDetected = (lowIndex in translatedQuery) or (lowIndex in extendLemmas)
+        if isDontHavePositive or isDetected:
             detectedNames = GetNotZeroIndexes(targetTable, index)
 
             if lowIndex in extendNegativeLemmas:
@@ -128,13 +129,15 @@ def SearchImage(query):
                 if not hasName:
                     resultList.append(DogNameWeight(detectedName, targetTable.loc[index, detectedName]))
     
-    for result in resultList:
+    # 없었으면 하는 물체 제거
+    tmpList = list(resultList)
+    for result in tmpList:
         if result.name in imageNameToRemoveList:
             resultList.remove(result)
 
     resultNames = [x.name for x in sorted(resultList, key=lambda x: -x.weight)]
 
-    if resultNames.count == 0:
+    if len(resultNames) == 0:
         print('No Result!!!!!!!!')
     else:
         ShowImages(name, resultNames)
@@ -236,7 +239,7 @@ def ShowImages(dogName, imageNames):
 
 def main():
     run()
-    SearchImage('사람과 퍼그')
+    SearchImage('펫이 없는 퍼그')
 
 if __name__ == "__main__":
     main()
