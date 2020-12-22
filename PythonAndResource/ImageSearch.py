@@ -30,13 +30,19 @@ dogNameList = []
 # 한글 이름과 영어 이름이 매핑된 것
 translateNameMap = {}
 
-KOREAN = 'ko'
-ENGLISH = 'en'
 # 영어 불용어 집합
 englishStopWords = set(stopwords.words('english'))
+
+KOREAN = 'ko'
+ENGLISH = 'en'
 WITHOUT = 'without'
 KR_MANY = '들'
 client = translate.Client()
+
+class DogNameWeight:
+    def __init__(self, name, weight):
+        self.name = name
+        self.weight = weight
 
 def run():
     LoadTable()
@@ -74,7 +80,7 @@ def SearchImage(query):
 
     if translatedName not in translatedQuery:
         print('{} is not in {}'.format(translatedName, translatedQuery))
-        return
+        return None
 
     # 테이블 획득, 강아지 이름 제거
     targetTable = nameTableMap[name]
@@ -91,7 +97,7 @@ def SearchImage(query):
     extendLemmas = extendResult[0]
     extendNegativeLemmas = extendResult[1]
 
-    resultImageNameList = []
+    resultList = []
     imageNameToRemoveList = []
 
     # negative만 쿼리에 적었는지 검사
@@ -105,16 +111,34 @@ def SearchImage(query):
         lowIndex = index.lower()
         if isDontHavePositive or (lowIndex in translatedQuery) or (lowIndex in extendLemmas):
             detectedNames = GetNotZeroIndexes(targetTable, index)
-            resultImageNameList.extend(detectedNames)
+
             if lowIndex in extendNegativeLemmas:
                 imageNameToRemoveList.extend(detectedNames)
+                continue
+            
+            # 가중치 합산
+            for detectedName in detectedNames:
+                hasName = False
+                for result in resultList:
+                    if result.name == detectedName:
+                        result.weight += targetTable.loc[index, detectedName]
+                        hasName = True
+                        break
+                
+                if not hasName:
+                    resultList.append(DogNameWeight(detectedName, targetTable.loc[index, detectedName]))
+    
+    for result in resultList:
+        if result.name in imageNameToRemoveList:
+            resultList.remove(result)
 
-    resultImageNameList = list(set(resultImageNameList))
+    resultNames = [x.name for x in sorted(resultList, key=lambda x: -x.weight)]
 
-    for imageNameToRemove in imageNameToRemoveList:
-        resultImageNameList.remove(imageNameToRemove)
-
-    ShowImages(name, resultImageNameList)
+    if resultNames.count == 0:
+        print('No Result!!!!!!!!')
+    else:
+        ShowImages(name, resultNames)
+    return None
 
 def GetNotZeroIndexes(table, index):
     resultNameList = []
@@ -212,7 +236,7 @@ def ShowImages(dogName, imageNames):
 
 def main():
     run()
-    SearchImage('사람이 없는 시베리안 허스키')
+    SearchImage('사람과 퍼그')
 
 if __name__ == "__main__":
     main()
