@@ -4,12 +4,16 @@ import pandas as pd
 import six
 import google.cloud.translate_v2 as translate
 import matplotlib.image as img
-import matplotlib.pyplot as pp
+import matplotlib.pyplot as plt
+from matplotlib import font_manager, rc
 from tqdm import tqdm
 from nltk.corpus import wordnet
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
+
+font_name = font_manager.FontProperties(fname="c:/Windows/Fonts/malgun.ttf").get_name()
+rc('font', family=font_name)
 
 path = os.path.dirname(os.path.abspath(__file__))
 
@@ -17,7 +21,7 @@ tableDirName = 'VectorTables'
 tableDirPath = os.path.join(path, tableDirName)
 
 imageDirName = 'DogImages'
-imageDirName = os.path.join(path, imageDirName)
+imageDirPath = os.path.join(path, imageDirName)
 
 # 개 이름과 테이블이 매핑된 것
 nameTableMap = {}
@@ -49,20 +53,6 @@ def LoadTable():
         nameTableMap[dogName] = table
         dogNameList.append(dogName)
 
-def LoadImage(imagePath):
-    return img.imread(imagePath)
-
-def LoadImages(dirName, nameList):
-    imageDirPath = os.path.join(imageDirName, dirName)
-
-    images = []
-
-    for name in nameList:
-        imagePath = os.path.join(imageDirPath, name)
-        images.append(LoadImage(imagePath))
-
-    return images
-
 # TODO : 
 # 1. 인덱스에 있는 값들이 번역 쿼리에 들었는지 검사
 # 2. 없다면 단어 토큰화 -> lemma화 -> 영어에서 한글로 -> 한글에서 영어로
@@ -84,7 +74,7 @@ def SearchImage(query):
 
     if translatedName not in translatedQuery:
         print('{} is not in {}'.format(translatedName, translatedQuery))
-        return None
+        return
 
     # 테이블 획득, 강아지 이름 제거
     targetTable = nameTableMap[name]
@@ -124,7 +114,7 @@ def SearchImage(query):
     for imageNameToRemove in imageNameToRemoveList:
         resultImageNameList.remove(imageNameToRemove)
 
-    return resultImageNameList
+    ShowImages(name, resultImageNameList)
 
 def GetNotZeroIndexes(table, index):
     resultNameList = []
@@ -206,9 +196,23 @@ def TranslateQuery(query, source, target):
 
     return result['translatedText']
 
+def ShowImages(dogName, imageNames):
+    dogImagePath = os.path.join(imageDirPath, dogName)
+    fileType = '.png'
+
+    length = len(imageNames)
+
+    for i in range(length):
+        image = img.imread(os.path.join(dogImagePath, imageNames[i] + fileType), 0)
+        plt.figure()
+        plt.title(imageNames[i])
+        plt.imshow(image)
+
+    plt.show()
+
 def main():
     run()
-    print(SearchImage('사람이 없는 시베리안 허스키'))
+    SearchImage('사람이 없는 시베리안 허스키')
 
 if __name__ == "__main__":
     main()
